@@ -1,49 +1,59 @@
-var names_of_people = [];
+var mouseEvent = "empty";
+var last_position_of_x, last_position_of_y;
+
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext("2d");
     
-function submit()
-{
-    var GuestName = document.getElementById("name1").value;
-	// use the push function as - names_of_people.push(GuestName);
-	console.log(GuestName);    
-    console.log(names_of_people);
-    var lenght_of_name = names_of_people.length;
-    console.log(lenght_of_name);
-	document.getElementById("display_name").innerHTML=names_of_people.toString();
-   }
+    color = "black";
+    width_of_line = 2;
 
+    canvas.addEventListener("mousedown", my_mousedown);
+    
+    function my_mousedown(e)
+    {
+        //Addictonal Activity start
+        color = document.getElementById("color").value;
+        width_of_line = document.getElementById("width_of_line").value;
+        //Addictonal Activity ends
 
+        mouseEvent = "mouseDown";
+    }
 
-function show()
-{
-	var i= names_of_people.join("<br>");
-	console.log(names_of_people);
-	document.getElementById("p1").innerHTML=i.toString();
-	document.getElementById("sort_button").style.display="block";
-	
-}
+    canvas.addEventListener("mouseup", my_mouseup);
+    function my_mouseup(e)
+    {
+        mouseEvent = "mouseUP";
+    }
 
+    canvas.addEventListener("mouseleave", my_mouseleave);
+    function my_mouseleave(e)
+    {
+        mouseEvent = "mouseleave";
+    }
 
-function sorting()
-	{
-		names_of_people           // add the sort function here
-		// .sort();
-		var i= names_of_people.join("<br>");
-		console.log(names_of_people);		
-		document.getElementById("sorted").innerHTML=i.toString();
-		}
+    canvas.addEventListener("mousemove", my_mousemove);
+    function my_mousemove(e)
+    {
 
+         current_position_of_mouse_x = e.clientX - canvas.offsetLeft;
+         current_position_of_mouse_y = e.clientY - canvas.offsetTop;
 
-function searching()
-{
-	var s= document.getElementById("s1").value;
-	var found=0;
-	var j;
-	for(j=0; j<names_of_people.length; j++)
-		{
-			if(s==names_of_people[j]){
-				found=found+1;
-			}	
-		}
-	document.getElementById("p2").innerHTML="name found "+found+" time/s";
-	console.log("found name "+found+" time/s");
-}
+        if (mouseEvent == "mouseDown") {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width_of_line;
+
+        console.log("Last position of x and y coordinates = ");
+        console.log("x = " + last_position_of_x + "y = " + last_position_of_y);
+        ctx.moveTo(last_position_of_x, last_position_of_y);
+
+        console.log("Current position of x and y coordinates = ");
+        console.log("x  = " + current_position_of_mouse_x + "y = " + current_position_of_mouse_y);
+        ctx.lineTo(current_position_of_mouse_x, current_position_of_mouse_y);
+        ctx.stroke();
+        }
+
+        last_position_of_x = current_position_of_mouse_x; 
+        last_position_of_y = current_position_of_mouse_y;
+    }
+
